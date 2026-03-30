@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoWork - Admin Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --primary: #F97316;
+  --primary-dark: #EA580C;
+  --dark: #111827;
+  --gray-900: #0F172A;
+  --gray-800: #1F2937;
+  --gray-700: #374151;
+  --gray-600: #4B5563;
+  --gray-400: #9CA3AF;
+  --white: #FFFFFF;
+  --red: #EF4444;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--gray-900);
+  color: var(--white);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* SPLIT LAYOUT */
+.split {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+@media(max-width: 768px) {
+  .split { grid-template-columns: 1fr; }
+  .left-panel { display: none; }
+}
+
+/* LEFT */
+.left-panel {
+  background: linear-gradient(145deg, #1a0900 0%, #2d1500 50%, #111827 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.left-panel::before {
+  content: '';
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(249,115,22,0.15) 0%, transparent 65%);
+}
+
+.left-panel::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; left: -80px;
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 65%);
+}
+
+.lp-content { position: relative; z-index: 1; }
+
+.lp-logo {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 60px;
+}
+
+.lp-logo span { color: var(--primary); }
+
+.lp-content h1 {
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  margin-bottom: 16px;
+}
+
+.lp-content h1 span { color: var(--primary); }
+
+.lp-content p {
+  font-size: 16px;
+  color: var(--gray-400);
+  line-height: 1.7;
+  max-width: 340px;
+  margin-bottom: 48px;
+}
+
+.lp-stats {
+  display: flex;
+  gap: 32px;
+}
+
+.lp-stat .num {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.lp-stat .label {
+  font-size: 12px;
+  color: var(--gray-400);
+  margin-top: 2px;
+}
+
+/* RIGHT */
+.right-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  background: var(--dark);
+}
+
+.login-box {
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-box .top-logo {
+  display: none;
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 32px;
+}
+
+.login-box .top-logo span { color: var(--primary); }
+
+@media(max-width: 768px) {
+  .login-box .top-logo { display: block; }
+  .right-panel { padding: 60px 24px; }
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(249,115,22,0.1);
+  border: 1px solid rgba(249,115,22,0.25);
+  padding: 5px 12px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 20px;
+}
+
+.login-box h2 {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+
+.login-box > p {
+  font-size: 14px;
+  color: var(--gray-400);
+  margin-bottom: 32px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-400);
+  margin-bottom: 7px;
+}
+
+.input-wrap {
+  position: relative;
+}
+
+.input-wrap .icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 13px 14px 13px 42px;
+  background: var(--gray-800);
+  border: 1.5px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  color: var(--white);
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input::placeholder { color: var(--gray-600); }
+
+.form-group input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(249,115,22,0.1);
+}
+
+.error-msg {
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.25);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--red);
+  display: none;
+  margin-bottom: 16px;
+}
+
+.error-msg.show { display: flex; align-items: center; gap: 8px; }
+
+.login-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.login-btn:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(249,115,22,0.3); }
+.login-btn:disabled { background: var(--gray-700); color: var(--gray-500); cursor: not-allowed; transform: none; box-shadow: none; }
+
+.back-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 13px;
+  color: var(--gray-400);
+}
+
+.back-link a {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+</style>
+</head>
+<body>
+
+<div class="split">
+
+  <!-- LEFT BRANDING -->
+  <div class="left-panel">
+    <div class="lp-content">
+      <div class="lp-logo">Co<span>Work</span></div>
+      <h1>Manage your<br><span>platform</span></h1>
+      <p>Review worker applications, manage bookings, and keep the CoWork marketplace running smoothly.</p>
+      <div class="lp-stats">
+        <div class="lp-stat">
+          <div class="num">500+</div>
+          <div class="label">Workers</div>
+        </div>
+        <div class="lp-stat">
+          <div class="num">10K+</div>
+          <div class="label">Bookings</div>
+        </div>
+        <div class="lp-stat">
+          <div class="num">4.8★</div>
+          <div class="label">Avg Rating</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT FORM -->
+  <div class="right-panel">
+    <div class="login-box">
+      <div class="top-logo">Co<span>Work</span></div>
+
+      <div class="badge">⚙️ Admin Access</div>
+      <h2>Welcome back</h2>
+      <p>Sign in to access the admin dashboard</p>
+
+      <div class="error-msg" id="error">
+        ⚠️ Invalid username or password
+      </div>
+
+      <div class="form-group">
+        <label>Username</label>
+        <div class="input-wrap">
+          <span class="icon">👤</span>
+          <input id="username" type="text" placeholder="admin" autocomplete="username">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-wrap">
+          <span class="icon">🔒</span>
+          <input id="password" type="password" placeholder="Enter password" autocomplete="current-password">
+        </div>
+      </div>
+
+      <button class="login-btn" id="loginBtn" onclick="login()">
+        Sign In to Dashboard
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+
+      <div class="back-link"><a href="home.html">← Back to Home</a></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') login();
+});
+
+async function login() {
+  const btn = document.getElementById('loginBtn');
+  const errEl = document.getElementById('error');
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+
+  btn.textContent = 'Signing in...';
+  btn.disabled = true;
+  errEl.classList.remove('show');
+
+  try {
+    const res = await fetch('https://co-work-zpsh.onrender.com/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+
+    if (res.status === 200) {
+      const data = await res.json();
+      localStorage.setItem('token', data.token);
+      window.location.href = 'admin.html';
+    } else {
+      errEl.classList.add('show');
+      btn.textContent = 'Sign In to Dashboard';
+      btn.disabled = false;
+    }
+  } catch {
+    errEl.textContent = '⚠️ Server error. Please try again.';
+    errEl.classList.add('show');
+    btn.textContent = 'Sign In to Dashboard';
+    btn.disabled = false;
+  }
+}
+</script>
+
+</body>
+</html>

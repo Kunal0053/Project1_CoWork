@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoWork - Home Services at Your Doorstep</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --primary: #F97316;
+  --primary-dark: #EA580C;
+  --primary-light: #FED7AA;
+  --dark: #111827;
+  --gray-800: #1F2937;
+  --gray-600: #4B5563;
+  --gray-400: #9CA3AF;
+  --gray-100: #F3F4F6;
+  --white: #FFFFFF;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--dark);
+  color: var(--white);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 60px;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(17,24,39,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.logo span { color: var(--primary); }
+
+nav .nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+
+nav .nav-links a {
+  color: var(--gray-400);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+nav .nav-links a:hover { color: var(--white); }
+
+.nav-cta {
+  background: var(--primary);
+  color: white !important;
+  padding: 9px 20px;
+  border-radius: 8px;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  transition: background 0.2s !important;
+}
+
+.nav-cta:hover { background: var(--primary-dark) !important; color: white !important; }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 120px 60px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(249,115,22,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-bg-2 {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 50% 50% at 10% 80%, rgba(249,115,22,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.hero-content {
+  max-width: 640px;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(249,115,22,0.12);
+  border: 1px solid rgba(249,115,22,0.3);
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--primary);
+  margin-bottom: 24px;
+}
+
+.hero-badge::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  background: var(--primary);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.3); }
+}
+
+.hero h1 {
+  font-size: clamp(42px, 5vw, 68px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -2px;
+  margin-bottom: 20px;
+}
+
+.hero h1 .accent { color: var(--primary); }
+
+.hero p {
+  font-size: 18px;
+  color: var(--gray-400);
+  line-height: 1.7;
+  margin-bottom: 40px;
+  max-width: 480px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  padding: 14px 28px;
+  border-radius: 10px;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(249,115,22,0.35);
+}
+
+.btn-secondary {
+  background: rgba(255,255,255,0.06);
+  color: white;
+  padding: 14px 28px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-secondary:hover {
+  background: rgba(255,255,255,0.1);
+  transform: translateY(-1px);
+}
+
+.hero-stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 56px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.stat-item {}
+.stat-number {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--white);
+}
+.stat-label {
+  font-size: 13px;
+  color: var(--gray-400);
+  margin-top: 2px;
+}
+
+/* HERO VISUAL */
+.hero-visual {
+  position: absolute;
+  right: 60px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  width: 420px;
+}
+
+@media(max-width: 1024px) { .hero-visual { display: none; } }
+
+.service-chip {
+  background: var(--gray-800);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s;
+  cursor: default;
+  animation: floatChip 4s ease-in-out infinite;
+}
+
+.service-chip:nth-child(2) { animation-delay: 0.5s; }
+.service-chip:nth-child(3) { animation-delay: 1s; }
+.service-chip:nth-child(4) { animation-delay: 1.5s; }
+.service-chip:nth-child(5) { animation-delay: 2s; grid-column: span 2; }
+
+@keyframes floatChip {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+.service-chip:hover {
+  background: rgba(249,115,22,0.1);
+  border-color: rgba(249,115,22,0.3);
+}
+
+.service-chip .chip-icon { font-size: 32px; margin-bottom: 8px; }
+.service-chip .chip-name { font-size: 13px; font-weight: 600; color: var(--white); }
+.service-chip .chip-price { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+
+/* PORTAL CARDS */
+.portals {
+  padding: 80px 60px;
+  background: var(--gray-800);
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.section-header h2 {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+}
+
+.section-header p {
+  color: var(--gray-400);
+  font-size: 16px;
+}
+
+.portal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+@media(max-width: 768px) {
+  .portal-grid { grid-template-columns: 1fr; }
+  nav { padding: 16px 20px; }
+  .hero { padding: 100px 20px 60px; }
+  .portals { padding: 60px 20px; }
+  .hero-stats { gap: 24px; flex-wrap: wrap; }
+  nav .nav-links { display: none; }
+}
+
+.portal-card {
+  background: var(--dark);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px;
+  padding: 32px 28px;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.portal-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--primary);
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+
+.portal-card:hover::before { transform: scaleX(1); }
+
+.portal-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(249,115,22,0.25);
+  box-shadow: 0 20px 48px rgba(0,0,0,0.3);
+}
+
+.portal-icon-wrap {
+  width: 56px;
+  height: 56px;
+  background: rgba(249,115,22,0.12);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  margin-bottom: 20px;
+  transition: background 0.3s;
+}
+
+.portal-card:hover .portal-icon-wrap {
+  background: rgba(249,115,22,0.2);
+}
+
+.portal-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.portal-card p {
+  font-size: 14px;
+  color: var(--gray-400);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.portal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  padding: 0;
+  transition: gap 0.2s;
+}
+
+.portal-card:hover .portal-btn { gap: 10px; }
+
+/* HOW IT WORKS */
+.how {
+  padding: 80px 60px;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.steps::before {
+  content: '';
+  position: absolute;
+  top: 28px;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(249,115,22,0.4), transparent);
+}
+
+@media(max-width: 768px) {
+  .steps { grid-template-columns: 1fr 1fr; }
+  .steps::before { display: none; }
+  .how { padding: 60px 20px; }
+}
+
+.step {
+  text-align: center;
+  padding: 16px;
+}
+
+.step-num {
+  width: 56px;
+  height: 56px;
+  background: rgba(249,115,22,0.1);
+  border: 2px solid rgba(249,115,22,0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--primary);
+  margin: 0 auto 16px;
+}
+
+.step h4 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+.step p { font-size: 13px; color: var(--gray-400); line-height: 1.5; }
+
+/* FOOTER */
+footer {
+  padding: 32px 60px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--gray-400);
+  font-size: 13px;
+}
+
+@media(max-width: 600px) {
+  footer { flex-direction: column; gap: 8px; text-align: center; padding: 24px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Co<span>Work</span></div>
+  <ul class="nav-links">
+    <li><a href="#">Services</a></li>
+    <li><a href="#">How it Works</a></li>
+    <li><a href="#">Become a Pro</a></li>
+    <li><a href="worker.html" class="nav-cta">Worker Login</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-bg-2"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">Trusted by 10,000+ customers</div>
+    <h1>Home services,<br><span class="accent">done right.</span></h1>
+    <p>Book verified professionals for all your home service needs. From electrical work to plumbing — we bring the experts to your door.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="goUser()">
+        Book a Service
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+      <button class="btn-secondary" onclick="goWorker()">
+        Join as a Pro
+      </button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-number">10K+</div>
+        <div class="stat-label">Happy Customers</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">500+</div>
+        <div class="stat-label">Verified Pros</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">4.8★</div>
+        <div class="stat-label">Avg. Rating</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VISUAL -->
+  <div class="hero-visual">
+    <div class="service-chip">
+      <div class="chip-icon">⚡</div>
+      <div class="chip-name">Electrician</div>
+      <div class="chip-price">From ₹299</div>
+    </div>
+    <div class="service-chip">
+      <div class="chip-icon">🔧</div>
+      <div class="chip-name">Plumber</div>
+      <div class="chip-price">From ₹349</div>
+    </div>
+    <div class="service-chip">
+      <div class="chip-icon">🪑</div>
+      <div class="chip-name">Carpenter</div>
+      <div class="chip-price">From ₹399</div>
+    </div>
+    <div class="service-chip">
+      <div class="chip-icon">🔩</div>
+      <div class="chip-name">Mechanic</div>
+      <div class="chip-price">From ₹449</div>
+    </div>
+    <div class="service-chip">
+      <div class="chip-icon">👟</div>
+      <div class="chip-name">Cobbler</div>
+      <div class="chip-price">From ₹149</div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTALS -->
+<section class="portals">
+  <div class="section-header">
+    <h2>Who are you?</h2>
+    <p>Choose your role to get started</p>
+  </div>
+  <div class="portal-grid">
+
+    <div class="portal-card" onclick="goUser()">
+      <div class="portal-icon-wrap">👤</div>
+      <h3>Customer</h3>
+      <p>Find and book skilled professionals in your area for any home service need.</p>
+      <button class="portal-btn">Find Services →</button>
+    </div>
+
+    <div class="portal-card" onclick="goWorker()">
+      <div class="portal-icon-wrap">👷</div>
+      <h3>Professional</h3>
+      <p>Register as a verified worker, get bookings and grow your earnings on CoWork.</p>
+      <button class="portal-btn">Worker Portal →</button>
+    </div>
+
+    <div class="portal-card" onclick="goAdmin()">
+      <div class="portal-icon-wrap">⚙️</div>
+      <h3>Admin</h3>
+      <p>Manage the platform, review worker applications, and monitor bookings.</p>
+      <button class="portal-btn">Admin Panel →</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="section-header">
+    <h2>How it works</h2>
+    <p>Get a professional at your door in 3 simple steps</p>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h4>Choose a Service</h4>
+      <p>Browse from our range of verified home services</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h4>Pick a Professional</h4>
+      <p>View ratings, skills and location of workers near you</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h4>Book Instantly</h4>
+      <p>Confirm your booking in one tap — no calls needed</p>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <h4>Job Done</h4>
+      <p>Your professional arrives and completes the work</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>© 2026 <strong>CoWork</strong>. All rights reserved.</div>
+  <div>Made with ❤️ for local workers</div>
+</footer>
+
+<script>
+function goUser() { window.location.href = "CoWork.html"; }
+function goWorker() { window.location.href = "worker.html"; }
+function goAdmin() { window.location.href = "admin-login.html"; }
+</script>
+
+</body>
+</html>

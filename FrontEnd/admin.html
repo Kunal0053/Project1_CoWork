@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoWork - Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --primary: #F97316;
+  --primary-dark: #EA580C;
+  --dark: #111827;
+  --gray-900: #0F172A;
+  --gray-800: #1F2937;
+  --gray-700: #374151;
+  --gray-600: #4B5563;
+  --gray-500: #6B7280;
+  --gray-400: #9CA3AF;
+  --white: #FFFFFF;
+  --green: #10B981;
+  --orange: #F59E0B;
+  --red: #EF4444;
+  --blue: #3B82F6;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--gray-900);
+  color: var(--white);
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  background: var(--dark);
+  border-right: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 50;
+}
+
+.sidebar-logo {
+  padding: 24px 24px 20px;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.sidebar-logo span { color: var(--primary); }
+
+.sidebar-nav {
+  flex: 1;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gray-400);
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  background: none;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  text-align: left;
+}
+
+.nav-item:hover {
+  background: rgba(255,255,255,0.05);
+  color: var(--white);
+}
+
+.nav-item.active {
+  background: rgba(249,115,22,0.1);
+  color: var(--primary);
+}
+
+.nav-item .nav-icon { font-size: 18px; width: 20px; }
+
+.sidebar-footer {
+  padding: 16px 12px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--red);
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  background: none;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+}
+
+.logout-btn:hover { background: rgba(239,68,68,0.08); }
+
+/* MAIN */
+.main {
+  margin-left: 240px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* TOPBAR */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 32px;
+  background: var(--dark);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.topbar-title h1 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.topbar-title p {
+  font-size: 13px;
+  color: var(--gray-400);
+  margin-top: 2px;
+}
+
+.topbar-admin {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-avatar {
+  width: 36px;
+  height: 36px;
+  background: rgba(249,115,22,0.15);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.admin-name { font-size: 14px; font-weight: 600; }
+.admin-role { font-size: 12px; color: var(--gray-400); }
+
+/* CONTENT */
+.content { padding: 28px 32px; }
+
+/* STATS ROW */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: var(--dark);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.stat-card .sc-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.stat-card .sc-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.sc-icon.orange { background: rgba(249,115,22,0.12); }
+.sc-icon.green  { background: rgba(16,185,129,0.12); }
+.sc-icon.blue   { background: rgba(59,130,246,0.12); }
+.sc-icon.amber  { background: rgba(245,158,11,0.12); }
+
+.stat-card .sc-val {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.stat-card .sc-label {
+  font-size: 13px;
+  color: var(--gray-400);
+  margin-top: 2px;
+}
+
+/* SECTION */
+.section {
+  background: var(--dark);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 18px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.section-header h2 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.section-header p {
+  font-size: 12px;
+  color: var(--gray-400);
+  margin-top: 2px;
+}
+
+.refresh-btn {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--gray-400);
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.refresh-btn:hover { background: rgba(255,255,255,0.08); color: var(--white); }
+
+.section-body { padding: 8px 0; }
+
+/* WORKER ROW */
+.worker-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: background 0.15s;
+}
+
+.worker-row:last-child { border-bottom: none; }
+.worker-row:hover { background: rgba(255,255,255,0.02); }
+
+.wr-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--gray-700);
+}
+
+.wr-info { flex: 1; min-width: 0; }
+
+.wr-name {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.wr-meta {
+  font-size: 12px;
+  color: var(--gray-400);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot { width: 3px; height: 3px; background: var(--gray-600); border-radius: 50%; }
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.status-pill.approved { background: rgba(16,185,129,0.1); color: var(--green); }
+.status-pill.pending  { background: rgba(245,158,11,0.1); color: var(--orange); }
+.status-pill.rejected { background: rgba(239,68,68,0.1); color: var(--red); }
+
+.wr-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.action-btn {
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.2s;
+}
+
+.btn-approve { background: rgba(16,185,129,0.12); color: var(--green); }
+.btn-approve:hover { background: rgba(16,185,129,0.22); }
+
+.btn-reject { background: rgba(239,68,68,0.1); color: var(--red); }
+.btn-reject:hover { background: rgba(239,68,68,0.2); }
+
+.btn-delete { background: rgba(107,114,128,0.12); color: var(--gray-400); }
+.btn-delete:hover { background: rgba(239,68,68,0.12); color: var(--red); }
+
+/* BOOKING ROW */
+.booking-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.booking-row:last-child { border-bottom: none; }
+
+.br-info .br-name { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+.br-info .br-meta { font-size: 12px; color: var(--gray-400); }
+
+.br-time {
+  font-size: 12px;
+  color: var(--gray-500);
+  text-align: right;
+}
+
+/* EMPTY */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--gray-500);
+}
+
+.empty-state .ei { font-size: 40px; margin-bottom: 12px; }
+.empty-state p { font-size: 14px; }
+
+/* LOADING */
+.skeleton {
+  height: 70px;
+  background: linear-gradient(90deg, var(--gray-800) 25%, var(--gray-700) 50%, var(--gray-800) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+  margin: 8px 24px;
+  border-radius: 10px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* RESPONSIVE */
+@media(max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; }
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .content { padding: 20px 16px; }
+  .topbar { padding: 16px 20px; }
+}
+
+@media(max-width: 600px) {
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .wr-actions { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">Co<span>Work</span></div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" onclick="switchTab('workers', this)">
+        <span class="nav-icon">👷</span> Workers
+      </button>
+      <button class="nav-item" onclick="switchTab('bookings', this)">
+        <span class="nav-icon">📋</span> Bookings
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="logout()">
+        <span style="font-size:18px">🚪</span> Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN AREA -->
+  <div class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="topbar-title">
+        <h1 id="page-title">Workers</h1>
+        <p id="page-sub">Manage worker applications and approvals</p>
+      </div>
+      <div class="topbar-admin">
+        <div>
+          <div class="admin-name" style="text-align:right">Admin</div>
+          <div class="admin-role">Platform Manager</div>
+        </div>
+        <div class="admin-avatar">⚙️</div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- STATS -->
+      <div class="stats-row" id="stats-row">
+        <div class="stat-card">
+          <div class="sc-top">
+            <div class="sc-icon orange">👷</div>
+          </div>
+          <div class="sc-val" id="s-total">—</div>
+          <div class="sc-label">Total Workers</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-top">
+            <div class="sc-icon green">✅</div>
+          </div>
+          <div class="sc-val" id="s-approved">—</div>
+          <div class="sc-label">Approved</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-top">
+            <div class="sc-icon amber">⏳</div>
+          </div>
+          <div class="sc-val" id="s-pending">—</div>
+          <div class="sc-label">Pending Review</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-top">
+            <div class="sc-icon blue">📋</div>
+          </div>
+          <div class="sc-val" id="s-bookings">—</div>
+          <div class="sc-label">Total Bookings</div>
+        </div>
+      </div>
+
+      <!-- WORKERS SECTION -->
+      <div class="section" id="workers-section">
+        <div class="section-header">
+          <div>
+            <h2>All Workers</h2>
+            <p>Review, approve or remove workers from the platform</p>
+          </div>
+          <button class="refresh-btn" onclick="loadWorkers()">↻ Refresh</button>
+        </div>
+        <div class="section-body" id="workers-list">
+          <div class="skeleton"></div>
+          <div class="skeleton"></div>
+          <div class="skeleton"></div>
+        </div>
+      </div>
+
+      <!-- BOOKINGS SECTION -->
+      <div class="section" id="bookings-section" style="display:none">
+        <div class="section-header">
+          <div>
+            <h2>All Bookings</h2>
+            <p>View all service bookings placed by customers</p>
+          </div>
+          <button class="refresh-btn" onclick="loadBookings()">↻ Refresh</button>
+        </div>
+        <div class="section-body" id="bookings-list">
+          <div class="skeleton"></div>
+          <div class="skeleton"></div>
+          <div class="skeleton"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const token = localStorage.getItem('token');
+if (!token) window.location.href = 'admin-login.html';
+
+let allWorkers = [];
+let allBookings = [];
+
+// TAB SWITCH
+function switchTab(tab, el) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  el.classList.add('active');
+
+  if (tab === 'workers') {
+    document.getElementById('workers-section').style.display = '';
+    document.getElementById('bookings-section').style.display = 'none';
+    document.getElementById('page-title').textContent = 'Workers';
+    document.getElementById('page-sub').textContent = 'Manage worker applications and approvals';
+  } else {
+    document.getElementById('workers-section').style.display = 'none';
+    document.getElementById('bookings-section').style.display = '';
+    document.getElementById('page-title').textContent = 'Bookings';
+    document.getElementById('page-sub').textContent = 'View all customer service bookings';
+    loadBookings();
+  }
+}
+
+// LOAD WORKERS
+async function loadWorkers() {
+  const list = document.getElementById('workers-list');
+  list.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
+
+  try {
+    const res = await fetch('https://co-work-zpsh.onrender.com/admin/all-workers', { headers: { Authorization: token } });
+
+    if (res.status === 401 || res.status === 403) { logout(); return; }
+
+    allWorkers = await res.json();
+
+    const approved = allWorkers.filter(w => w.status === 'approved').length;
+    const pending  = allWorkers.filter(w => w.status === 'pending').length;
+
+    document.getElementById('s-total').textContent    = allWorkers.length;
+    document.getElementById('s-approved').textContent = approved;
+    document.getElementById('s-pending').textContent  = pending;
+
+    if (allWorkers.length === 0) {
+      list.innerHTML = '<div class="empty-state"><div class="ei">👷</div><p>No workers registered yet</p></div>';
+      return;
+    }
+
+    list.innerHTML = '';
+    allWorkers.forEach(w => {
+      const row = document.createElement('div');
+      row.className = 'worker-row';
+      row.id = 'row-' + w._id;
+
+      const skillIcon = { electrician:'⚡', plumber:'🔧', carpenter:'🪑', mechanic:'🔩', cobbler:'👟' }[w.skill] || '🔨';
+
+      row.innerHTML = `
+        <img class="wr-avatar" src="${w.photo ? '/uploads/' + w.photo : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(w.name) + '&background=374151&color=fff&size=46&bold=true'}" alt="${w.name}">
+        <div class="wr-info">
+          <div class="wr-name">${w.name}</div>
+          <div class="wr-meta">
+            ${skillIcon} ${w.skill}
+            <span class="dot"></span>
+            📍 ${w.location}
+            <span class="dot"></span>
+            <span class="status-pill ${w.status}">
+              ${w.status === 'approved' ? '✓' : w.status === 'pending' ? '⏳' : '✗'} ${w.status}
+            </span>
+          </div>
+        </div>
+        <div class="wr-actions">
+          ${w.status === 'pending' ? `
+            <button class="action-btn btn-approve" onclick="approve('${w._id}')">✓ Approve</button>
+            <button class="action-btn btn-reject" onclick="reject('${w._id}')">✗ Reject</button>
+          ` : ''}
+          <button class="action-btn btn-delete" onclick="deleteWorker('${w._id}')">🗑 Delete</button>
+        </div>
+      `;
+      list.appendChild(row);
+    });
+
+  } catch {
+    list.innerHTML = '<div class="empty-state"><div class="ei">⚠️</div><p>Error loading workers</p></div>';
+  }
+}
+
+// LOAD BOOKINGS
+async function loadBookings() {
+  const list = document.getElementById('bookings-list');
+  list.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
+
+  try {
+    const res = await fetch('https://co-work-zpsh.onrender.com/admin/bookings', { headers: { Authorization: token } });
+    allBookings = await res.json();
+
+    document.getElementById('s-bookings').textContent = allBookings.length;
+
+    if (allBookings.length === 0) {
+      list.innerHTML = '<div class="empty-state"><div class="ei">📋</div><p>No bookings yet</p></div>';
+      return;
+    }
+
+    list.innerHTML = '';
+    [...allBookings].reverse().forEach(b => {
+      const skillIcon = { electrician:'⚡', plumber:'🔧', carpenter:'🪑', mechanic:'🔩', cobbler:'👟' }[b.skill] || '🔨';
+      const row = document.createElement('div');
+      row.className = 'booking-row';
+      row.innerHTML = `
+        <div class="br-info">
+          <div class="br-name">${b.workerName}</div>
+          <div class="br-meta">${skillIcon} ${b.skill} &nbsp;·&nbsp; 📍 ${b.location}</div>
+        </div>
+        <div class="br-time">${new Date(b.time).toLocaleString()}</div>
+      `;
+      list.appendChild(row);
+    });
+
+  } catch {
+    list.innerHTML = '<div class="empty-state"><div class="ei">⚠️</div><p>Error loading bookings</p></div>';
+  }
+}
+
+// APPROVE
+async function approve(id) {
+  await fetch(`https://co-work-zpsh.onrender.com/admin/approve/${id}`, { method: 'PUT', headers: { Authorization: token } });
+  loadWorkers();
+}
+
+// REJECT
+async function reject(id) {
+  await fetch(`https://co-work-zpsh.onrender.com/admin/reject/${id}`, { method: 'PUT', headers: { Authorization: token } });
+  loadWorkers();
+}
+
+// DELETE
+async function deleteWorker(id) {
+  if (!confirm('Permanently delete this worker?')) return;
+  await fetch(`https://co-work-zpsh.onrender.com/admin/delete/${id}`, { method: 'DELETE', headers: { Authorization: token } });
+  loadWorkers();
+}
+
+// LOGOUT
+function logout() {
+  localStorage.removeItem('token');
+  window.location.href = 'admin-login.html';
+}
+
+// INIT
+loadWorkers();
+loadBookings();
+</script>
+
+</body>
+</html>
